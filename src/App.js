@@ -2,27 +2,38 @@
  import Buttons from './buttons'
 import data from './data'
 import Menus from './menus'
-
-function App() {
-const [menu, setMenu] =useState(data)
-
-  return (
-
-    <section className="main-section">
-    <h1 className='title'>Our Menu</h1>
-    <div className="underline"></div>
-    <div className="buttons">
-    {menu.map(item=>{
-      return(
-        
-      <Buttons {...item} />
-   
-      )
-    })}
-    </div>
-    </section>
-  )
+  const allCategories = ['all', ...new Set (data.map(items=>{
+   return items.category
+  }))]
+  function App() {
+    
+  const [items,setItems] = useState(data)
+  const [categories,setCategories] =useState(allCategories)
+  // Buttons Functionality function
+ const buttonEffect = (category)=>{
+   if(category ==='all'){
+ setItems(data)
+    
+     return
+   }
+   const otherButtons = data.filter(item=>{
+     if(item.category===category){
+     return item.category
+     }
  
+   })
+ 
+     setItems(otherButtons)
+ }
+ return(
+   <section className="section-one">
+<div className="main-title">our menu</div>
+<div className="underline"></div>
+
+<Buttons categories={categories} buttonEffect={buttonEffect} />
+<Menus items={items}/>
+</section>
+ )
 }
 
 export default App;
